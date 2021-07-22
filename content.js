@@ -5,7 +5,7 @@ var in_listAll_page = window.location.href.includes('all=1');
 document.getElementById('nav_sect').innerHTML += `
     <li>
         |
-        <a href="#" id="download_all_hw" >` + ((in_listAll_page)?`[Download all]`:`[List all]`) + `</a>
+        <a id="download_all_hw" >` + ((in_listAll_page)?`[Download all]`:`[List all]`) + `</a>
     </li>
 `;
 
@@ -18,7 +18,9 @@ document.getElementById('sect_cont').innerHTML = ((in_listAll_page)?`
             &emsp; Delayed only: <input id="downloadDelayedOption" type="checkbox"> <br>
             <br>
         Meta CSV: <br>
-            &emsp; Download meta CSV: <input id="downloadMetaCSV" type="checkbox" onclick="return false;" checked> 
+            &emsp; Download meta CSV: <input id="downloadMetaCSV" type="checkbox" onclick="return false;" checked> <br>
+            <br>
+        <progress id="downloadProgress" value="100" max="100"> </progress>
     </div>
     <br>
 `:``) + document.getElementById('sect_cont').innerHTML;
@@ -26,34 +28,49 @@ document.getElementById('sect_cont').innerHTML = ((in_listAll_page)?`
 
 /////////////////////////////////////////////  Utils  /////////////////////////////////////////////
 
-const downloadOptions = ['downloadEveryoneOption', 'downloadOntimeOption', 'downloadDelayedOption'];
-const setOption = (option) => { 
+const setOption = (option) => {     
+    const downloadOptions = ['downloadEveryoneOption', 'downloadOntimeOption', 'downloadDelayedOption'];
+
     myDownloadOption = option; 
     downloadOptions.forEach((option) => { document.getElementById(option).checked = (option===myDownloadOption); });
 }
 
 const downloadLink = (link) => {
+    let tab = window.open(link).blur();
+};
+
+const saveCSV = (csvCols, data, HwName) => {
+
+    let lineArray = [];
+    data.forEach(function (infoArray, index) {
+        var line = infoArray.join(",");
+        lineArray.push(index == 0 ? "data:text/csv; charset=utf-8,\ufeff" + csvCols + line : line);
+    });
+    let csvContent = lineArray.join("\n");
+    let encodedUri = encodeURI(csvContent);
 
     let downloadTag = document.createElement("a");
-    downloadTag.href = link;
-    // downloadTag.download = "a.pdf";
+    downloadTag.href = encodedUri;
+    downloadTag.download = "CeibaHWDownload_"+HwName+".csv";
 
-    document.body.appendChild(downloadTag);
-    // downloadTag.click();
+    document.body.append(downloadTag);
+    downloadTag.click();
     document.body.removeChild(downloadTag);
 
-};
+    // console.log(csvContent);
+}
 
 const downloadAllHw = async () => {
 
     // 跳到 listAll page
     if ( !window.location.href.includes('all=1') ) {
         window.open("https://ceiba.ntu.edu.tw/course_admin/hw/index.php?op=hw_corr_list&all=1&sort=");
+        return;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
 
-    // download files
+    // // download files
     // let aTags = Array.from(document.getElementsByTagName('a'));
     // let hwLinks = aTags.filter( 
     //         a => a.href.includes('hw_download') 
@@ -61,18 +78,27 @@ const downloadAllHw = async () => {
     //         a => a.href 
     //     );
 
-    // for (let i=0; i<hwLinks.length; i++) {
-        
+    // // console.log(hwLinks);
+
+    // var temporaryDownloadLink = document.createElement("a");
+    // temporaryDownloadLink.style.display = 'none';
+
+    // for (let i=0; i<hwLinks.length/10; i++) {
     //     downloadLink(hwLinks[i]);
-    //     // await window.open(hwLinks[i]);
     // }
+
+    // return;
 
     /////////////////////////////////////////////////////////////////////////////////////////
 
-    // Get Rows
+    // HW name
+    let HwName = document.getElementsByTagName('table')[0].getElementsByTagName('caption')[0].innerText.replace('批改作業: ', ''); 
+
+    // Rows
     let trTags = Array.from(document.getElementsByTagName('tr'));
 
     // Iter Rows
+    let data = [];
     for (let i=0; i<trTags.length; i++) {
 
         let tdTags = Array.from(trTags[i].getElementsByTagName('td'));
@@ -80,12 +106,8 @@ const downloadAllHw = async () => {
         if ( tdTags.length===0 ) 
             continue;
 
-        // let stuID = tdTags[2].getElementsByTagName('input')[0].value;
-        // let hwLink = tdTags[7].getElementsByTagName('a')[0].href;
-        // let date = tdTags[6].getElementsByTagName('span')[0].innerText;
-        // let late = tdTags[6].getElementsByTagName('span')[0].className==='expr';
-
-        let [stuID, stuName, hwLink, submitDate, late] = [
+        // parse 
+        let [stuID, stuName, hwLink, submitTime, late] = [
             tdTags[2].getElementsByTagName('input')[0].value,
             tdTags[3].getElementsByTagName('span')[0].innerText,
             tdTags[7].getElementsByTagName('a')[0].href,
@@ -93,9 +115,24 @@ const downloadAllHw = async () => {
             (tdTags[6].getElementsByTagName('span')[0].className==='expr')?'late':''
         ];
 
-        console.log([stuID, stuName, hwLink, submitDate, late]);
+        // download
+        if ( (myDownloadOption==="downloadEveryoneOption") || // everyone
+             (myDownloadOption==="downloadOntimeOption" && !late) || // ontime
+             (myDownloadOption==="downloadDelayedOption" && late)    // delayed
+        ) {
+            downloadLink(hwLink);
+        }
+
+        // csv data append
+        data.push([stuID, stuName, submitTime, late]);
+
+        // set progress
+        document.getElementById('downloadProgress').value = Math.ceil(i/trTags.length*100);
 
     }
+
+    let dataCols = "stuID, stuName, submitTime, late, \n";
+    saveCSV(dataCols, data, HwName);
 
 }
 
