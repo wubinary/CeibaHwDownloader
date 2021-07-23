@@ -5,7 +5,7 @@ var in_listAll_page = window.location.href.includes('all=1');
 document.getElementById('nav_sect').innerHTML += `
     <li>
         |
-        <a id="download_all_hw" >` + ((in_listAll_page)?`[Download all]`:`[List all]`) + `</a>
+        <a href="#" id="download_all_hw" >` + ((in_listAll_page)?`[Download all]`:`[List all]`) + `</a>
     </li>
 `;
 
@@ -107,31 +107,37 @@ const downloadAllHw = async () => {
             continue;
 
         // parse 
-        let [stuID, stuName, hwLink, submitTime, late] = [
+        let [stuID, stuName, hwLink, submitTime, late, haveDownload] = [
             tdTags[2].getElementsByTagName('input')[0].value,
             tdTags[3].getElementsByTagName('span')[0].innerText,
             tdTags[7].getElementsByTagName('a')[0].href,
             tdTags[6].getElementsByTagName('span')[0].innerText,
-            (tdTags[6].getElementsByTagName('span')[0].className==='expr')?'late':''
+            (tdTags[6].getElementsByTagName('span')[0].className==='expr')?'late':'',
+            ''
         ];
 
         // download
-        if ( (myDownloadOption==="downloadEveryoneOption") || // everyone
-             (myDownloadOption==="downloadOntimeOption" && !late) || // ontime
-             (myDownloadOption==="downloadDelayedOption" && late)    // delayed
+        if (submitTime // 判斷是否有檔案
+            &&
+            (
+                (myDownloadOption==="downloadEveryoneOption") || // everyone
+                (myDownloadOption==="downloadOntimeOption" && !late) || // ontime
+                (myDownloadOption==="downloadDelayedOption" && late)    // delayed
+            )
         ) {
             downloadLink(hwLink);
+            haveDownload = 'v';
         }
 
         // csv data append
-        data.push([stuID, stuName, submitTime, late]);
+        data.push([stuID, stuName, submitTime, late, haveDownload]);
 
         // set progress
         document.getElementById('downloadProgress').value = Math.ceil(i/trTags.length*100);
 
     }
 
-    let dataCols = "stuID, stuName, submitTime, late, \n";
+    let dataCols = "stuID, stuName, submitTime, late, downloaded, \n";
     saveCSV(dataCols, data, HwName);
 
 }
