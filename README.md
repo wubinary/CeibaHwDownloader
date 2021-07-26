@@ -10,10 +10,10 @@
 ![](https://i.imgur.com/GudjaoU.png)
 
 # Features
-> Intro : [youtube]()
+> Demo : [youtube]()
 * Download All HW in one-click.
 * Option select with e.g.(OnTime, Delayed).
 * Produce HW Meta csv.
 
 # Install
-Chrome Extension : [link]()
+Chrome Extension : [link](https://chrome.google.com/webstore/detail/ntu-ceiba-hw-downloader/kneacbnlacfinpefpcmiceecgnahdngb?hl=zh-TW)
