@@ -68,28 +68,7 @@ const downloadAllHw = async () => {
         return;
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-
-    // // download files
-    // let aTags = Array.from(document.getElementsByTagName('a'));
-    // let hwLinks = aTags.filter( 
-    //         a => a.href.includes('hw_download') 
-    //     ).map( 
-    //         a => a.href 
-    //     );
-
-    // // console.log(hwLinks);
-
-    // var temporaryDownloadLink = document.createElement("a");
-    // temporaryDownloadLink.style.display = 'none';
-
-    // for (let i=0; i<hwLinks.length/10; i++) {
-    //     downloadLink(hwLinks[i]);
-    // }
-
-    // return;
-
-    /////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////// 下載全部作業 //////////////////////////////////////
 
     // HW name
     let HwName = document.getElementsByTagName('table')[0].getElementsByTagName('caption')[0].innerText.replace('批改作業: ', ''); 
@@ -141,23 +120,6 @@ const downloadAllHw = async () => {
     saveCSV(dataCols, data, HwName);
 
 }
-
-// // get rows
-// var trTags = Array.from(document.getElementsByTagName('tr'));
-
-// for (let i=0; i<trTags.length; i++) {
-
-//     let tdTags = Array.from(trTags[i].getElementsByTagName('td'));
-
-//     if ( tdTags.length===0 ) 
-//         continue;
-
-//     let stuID = tdTags[2].getElementsByTagName('input')[0].value;
-//     let hwLink = tdTags[7].getElementsByTagName('a')[0].href;
-//     let date = tdTags[6].getElementsByTagName('span')[0].innerText;
-//     let late = tdTags[6].getElementsByTagName('span')[0].className==='expr';
-
-// }
 
 
 // Download Button
