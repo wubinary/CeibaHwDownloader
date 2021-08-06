@@ -1,0 +1,28 @@
+{
+    "manifest_version": 2,
+    "name": "NTU Ceiba HW Downloader",
+    "version": "1.1.0",
+    "description": "👎 Poor ntu ceiba don't got an download all button. So we write a extension that can download all HW without clicking it one-by-one.",
+    "icons": {
+        "16": "icon_16.png",
+        "48": "icon_48.png",
+        "128": "icon_128.png"
+    },
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_title": "Ceiba HW Downloader",
+        "default_popup": "popup.html"
+    },
+
+    "options_page": "popup.html",
+
+    "content_scripts": [
+        {
+            "matches": ["https://ceiba.ntu.edu.tw/course_admin/hw/index.php?op=hw_corr_list&*"],
+            "run_at": "document_end",
+            "js": ["content.js"]
+        }
+    ],
+
+    "permissions": [] 
+}
