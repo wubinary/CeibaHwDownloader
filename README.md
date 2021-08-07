@@ -19,4 +19,4 @@
 > Chrome Extension : [link](https://chrome.google.com/webstore/detail/ntu-ceiba-hw-downloader/kneacbnlacfinpefpcmiceecgnahdngb?hl=zh-TW)
 
 # Version
-1.1.0 -> update popup 
+1.2.0 -> update popup

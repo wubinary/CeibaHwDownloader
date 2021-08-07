@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "NTU Ceiba HW Downloader",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "👎 Poor ntu ceiba don't got an download all button. So we write a extension that can download all HW without clicking it one-by-one.",
     "icons": {
         "16": "icon_16.png",

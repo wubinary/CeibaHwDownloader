@@ -25,7 +25,7 @@ const App = () => {
       <h3>About</h3>
       <ul>
           <li>OpenSource: <strong><a href="https://github.com/wubinary/CeibaHwDownloader" target="_blank">[Github]</a></strong> </li>
-          <li>Version: 1.1.0 </li>
+          <li>Version: 1.2.0 </li>
       </ul>
       <hr/>
 
