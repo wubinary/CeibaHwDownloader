@@ -1,7 +1,7 @@
 # Ceiba Hw Downloader Browser Extension
 ###### tags: `lab` `NTU`
 
-![](https://img.shields.io/static/v1?label=Version&message=1.1.0&color=green)
+![](https://img.shields.io/static/v1?label=Version&message=1.2.0&color=green)
 ![](https://img.shields.io/static/v1?label=Updated&message=Aug.06.2021&color=green)
 
 > Sucks, NTU ceiba doesn't got an download all button 👎 😩. 
