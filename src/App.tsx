@@ -6,9 +6,12 @@ import * as fs from 'fs';
 const App = () => {
 
   return (
-    <div className="App" style={{minWidth: "300px", textAlign: "left", padding: "5px"}}>
-      <h1 style={{textAlign: "center", color: "#82C400"}} > Ceiba HW Downloader </h1>
+    <div className="app">
+      <h1 className="app-title"> Ceiba HW Downloader </h1>
       <hr/>
+
+      {/*<!-- Intro -->*/}
+      <p className="intro">👎 Poor ntu ceiba don't got an download all button. So we write a extension that can download everyones HWs by one button click. </p>
 
       {/*<!-- Features -->*/}
       <h3>Features</h3>

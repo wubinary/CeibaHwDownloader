@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+}
+
+.app {
+    min-width: 300px;
+    text-align: left;
+    padding: 5px;
+}
+
+.app-title {
+    text-align: center;
+    color: #82C400;
+}
+
+p.intro {
+    padding: 0px 5px;
+}
